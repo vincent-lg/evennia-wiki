@@ -6,11 +6,35 @@
     Creating {{ address }}
 {% else %}
     Creating the root page
-{% endif %}{% endblock %}
+{% endif %}
+{% endblock %}
 {% block content %}
-<form action="/wiki/_edit/{{ address }}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p><input type="submit" value="Submit" /></p>
-</form>
+
+{% load add_class %}
+<div class="card">
+  <h2 class="card-header">
+    {% if page %}
+      Editing {{ page.address }}
+    {% elif address %}
+        Creating {{ address }}
+    {% else %}
+        Creating the root page
+    {% endif %}
+  </h2>
+  <div class="card-body">
+    <form action="/wiki/_edit/{{ address }}" method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="alert alert-warning" role="alert">
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+        {% for field in form %}
+
+        {% endfor %}
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
