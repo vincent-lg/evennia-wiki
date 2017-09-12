@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block titleblock %}
+{% if page %}
+    Editing {{ page.address }}
+{% elif address %}
+    Creating {{ address }}
+{% else %}
+    Creating the root page
+{% endif %}{% endblock %}
+{% block content %}
+<form action="/wiki/_edit/{{ address }}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p><input type="submit" value="Submit" /></p>
+</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block titleblock %}Wiki{% endblock %}
+{% block content %}
+<h1>{{ page.title }}</h1> <a href="/wiki/_edit/{{ address }}">[Edit]</a>
+{{ page.html|safe }}
+<p>Last edited by:
+{% if page.last and page.last.owner %}
+    {{ page.last.owner.username }}.</p>
+{% else %}
+    Somebody.</p>
+{% endif %}
+{% endblock %}
