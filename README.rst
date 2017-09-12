@@ -1,32 +1,38 @@
-# evennia-wiki
+evennia-wiki
+============
 
-A simple wiki for [Evennia](www.evennia.com/), simple to install within an Evennia game.
+A simple wiki for `Evennia`_, simple to install within an Evennia game.
 
-## Installation
+Installation
+------------
 
-For the time being, you should install from source.  Assuming you are
-in this directory (where the README.rst file is):
+For the time being, you should install from source. Assuming you are in
+this directory (where the README.rst file is):
+
+::
 
     pip install -e .
 
-Then, in your Evennia folder, edit `server/conf/settings.py` to add
+Then, in your Evennia folder, edit ``server/conf/settings.py`` to add
 the installed app:
 
-```python
-INSTALLED_APPS += (
+.. code:: python
+
+    INSTALLED_APPS += (
+            # ...
+            "evennia_wiki",
+    )
+
+Finally, in ``web/urls.py``, you should add the custom URL:
+
+.. code:: python
+
+    custom_patterns = [
         # ...
-        "evennia_wiki",
-)
-```
+        url(r'^wiki/', include('evennia_wiki.urls',
+                namespace='wiki', app_name='wiki')),
+    ]
 
-Finally, in `web/urls.py`, you should add the custom URL:
+Don’t forget to run ``evennia migrate`` after that.
 
-```python
-custom_patterns = [
-    # ...
-    url(r'^wiki/', include('evennia_wiki.urls',
-            namespace='wiki', app_name='wiki')),
-]
-```
-
-Don't forget to run `evennia migrate` after that.
+.. _Evennia: www.evennia.com/
