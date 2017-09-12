@@ -13,7 +13,7 @@ class PageManager(Manager):
 
     """
 
-    def create_with_content(self, address, owner, content):
+    def create_content(self, address, owner, content):
         """Create a wiki page with content.
 
         Args:
@@ -30,3 +30,47 @@ class PageManager(Manager):
         page.save()
         revision = page.revision_set.create(page=page, content=content, owner=owner)
         return page
+
+    def update_content(self, address, owner, content):
+        """
+        Update the content of an existing article.
+
+        Args:
+            address (str): the address of an existing page.
+            owner (User): the owner of the revision.
+            content (str): the content of the revision to be created.
+
+        """
+        page = self.get(address=address)
+        revision = page.revision_set.create(page=page, content=content, owner=owner)
+        return page
+
+    def create_or_update_content(self, address, owner, content,
+            force_update=True):
+        """
+        Create or update a page with content.
+
+        Args:
+            address (str): the address of a page (existing or not).
+            owner (User): the owner of the revision.
+            content (str): the content of the revision to be created.
+            force_update (bool, optional): force updating the article
+                    even if the content is not different.
+
+        Note:
+            The `force_update` argument, if set to `False`, will not
+            update the page if the content isn't different from the
+            one specified in argument.  This avoids creating a lot
+            of revisions whether no change has taken place.
+
+        """
+        try:
+            page = self.get(address=address)
+        except self.model.DoesNotExist:
+            return self.create_content(address, owner, content)
+        else:
+            # The page exist
+            if force_update or page.content != content:
+                self.update_content(address, owner, content)
+
+            return page
