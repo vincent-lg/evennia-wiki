@@ -1,12 +1,29 @@
 {% extends "base.html" %}
-{% block titleblock %}Wiki{% endblock %}
+{% block titleblock %}Wiki{% if page.title %} - {{ page.title }} {% endif %}{% endblock %}
 {% block content %}
-<h1>{{ page.title }}</h1> <a href="/wiki/_edit/{{ address }}">[Edit]</a>
-{{ page.html|safe }}
-<p>Last edited by:
-{% if page.last and page.last.owner %}
-    {{ page.last.owner.username }}.</p>
-{% else %}
-    Somebody.</p>
-{% endif %}
+
+<div class="card">
+  <div class="card-header">
+    <h1>{{ page.title }}</h1>
+    <small>
+      Last edited by:
+      {% if page.last and page.last.owner %}
+          {{ page.last.owner.username }}.
+      {% else %}
+          Somebody.
+      {% endif %}
+    </small>
+  </div>
+  <div class="card-body">
+    {{ page.html|safe }}
+  </div>
+  <div class="card-footer">
+    <a class="btn btn-primary" href="/wiki/_edit/{{ address }}">Edit</a>
+    {% comment %}
+    This is a bad idea - we should make a form or use Javascript to POST to a delete endpoint.
+    {% endcomment %}
+    <a class="btn btn-danger" href="">Delete</a>
+  </div>
+</div>
+
 {% endblock %}
