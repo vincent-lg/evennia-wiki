@@ -1,0 +1,21 @@
+{% extends "website/base.html" %}
+
+{% block content %}
+<div class="breadcrumb">
+  {% if page %}
+  {% for parent in page.parents %}
+    <a class="breadcrumb-item" href="/wiki/{{ parent.address }}">
+    {{ parent.part_address }}</a>
+  {% endfor %}
+  <span class="breadcrumb-item active">{{ page.part_address }}</span>
+  {% elif address %}
+  <span class="breadcrumb-item active">{{ address }}</span>
+  {% endif %}
+</div>
+
+{% block page_content %}
+
+{% endblock %}
+
+
+{% endblock content %}

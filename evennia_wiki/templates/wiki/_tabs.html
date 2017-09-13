@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs card-header-tabs">
+  <li class="nav-item">
+    <a class="nav-link{% if active_tab == "view" %} active{% endif %}" href="/wiki/{% firstof address page.address %}">View</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active_tab == "edit" %} active{% endif %}" href="/wiki/_edit/{% firstof address page.address %}">Edit</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active_tab == "history" %} active{% endif %}" href="/wiki/_history/{% firstof address page.address %}">History</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active_tab == "settings" %} active{% endif %}" href="/wiki/_settings/{% firstof address page.address %}">Settings</a>
+  </li>
+</ul>
