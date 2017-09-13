@@ -27,7 +27,7 @@
     {{ page.html|safe }}
   </div>
   <div class="card-footer">
-    <a class="btn btn-primary" href="/wiki/_edit/{{ address }}">Edit</a>
+    <a class="btn btn-primary" href="/wiki/_edit/{{ page.address }}">Edit</a>
     {% comment %}
     This is a bad idea - we should make a form or use Javascript to POST to a delete endpoint.
     {% endcomment %}
