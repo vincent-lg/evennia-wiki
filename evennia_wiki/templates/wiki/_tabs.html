@@ -20,9 +20,9 @@
         {% endfor %}
         <div class="dropdown-divider"></div>
         {% comment %}
-        We'll need a view here to add a subpage
+        We'll need to connect the view here - basically just another _edit view with a field for the new page title.
         {% endcomment %}
-        <a class="dropdown-item" href="/wiki/_edit/{% firstof address page.address %}/subpage">Add Child Page</a>
+        <a class="dropdown-item" href="/wiki/_add_child/{% firstof address page.address %}">Add Child Page</a>
       </div>
     </li>
   </ul>
