@@ -11,6 +11,18 @@
 {% block content %}
 
 {% load addclass %}
+<div class="breadcrumb">
+  {% if page %}
+  {% for parent in page.parents %}
+    <a class="breadcrumb-item" href="/wiki/{{ parent.address }}">
+    {{ parent.part_address }}</a>
+  {% endfor %}
+  <span class="breadcrumb-item active">{{ page.part_address }}</span>
+  {% elif address %}
+  <span class="breadcrumb-item active">{{ address }}</span>
+  {% endif %}
+</div>
+
 <div class="card">
   <h2 class="card-header">
     {% if page %}
@@ -30,9 +42,14 @@
         </div>
         {% endif %}
         {% for field in form %}
+        <div class="form-group">
           {{ field.errors }}
           {{ field.label_tag }}
-          {{ field }}
+          {{ field|addclass:'form-control' }}
+          {% if field.help_text %}
+            {{ field.help_text|addclass:'form-text text-muted' }}
+          {% endif %}
+        </div>
         {% endfor %}
         <p><input type="submit" value="Submit" /></p>
     </form>
