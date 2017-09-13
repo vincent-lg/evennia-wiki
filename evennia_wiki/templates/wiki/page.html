@@ -7,12 +7,20 @@
     <h1>{{ page.title }}</h1>
     <small>
       Last edited by:
-      {% if page.last and page.last.owner %}
-          {{ page.last.owner.username }}.
+      {% if page.last_revision and page.last_revision.owner %}
+          {{ page.last_revision.owner.username }},
       {% else %}
-          Somebody.
+          Somebody,
       {% endif %}
+      {{ page.last_modified_ago }}.
     </small>
+    <ul class="breadcrumb">
+      {% for parent in page.parents %}
+        <li class="breadcrumb-item"><a href="/wiki/{{ parent.address }}">
+        {{ parent.part_address }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active">{{ page.part_address }}</li>
+    </ul>
   </div>
   <div class="card-body">
     {{ page.html|safe }}

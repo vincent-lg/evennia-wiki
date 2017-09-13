@@ -24,6 +24,10 @@ class TestPages(TestCase):
         self.assertEqual(jazz.parents, [root, music])
         self.assertEqual(folk.parents, [root, music])
 
+        # Test children
+        self.assertEqual(root.children, [music])
+        self.assertEqual(music.children, [folk, jazz])
+
     def test_content(self):
         """Test to add/edit content quickly."""
         root = Page.objects.create_content("", None, "This is the root page.")

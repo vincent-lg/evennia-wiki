@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from datetime import datetime
+import re
 
 from django.db import models
+from django.utils.timezone import now
 from evennia.accounts.models import AccountDB
+from evennia.utils.utils import time_format
 from markdown import Markdown
 
 from managers import PageManager
@@ -24,6 +28,17 @@ class Page(models.Model):
     def last_revision(self):
         """Return the last revision, if any, or None."""
         return self.revision_set.order_by("created_on").last()
+
+    @property
+    def last_modified_ago(self):
+        """Return the X {unit}{s} ago."""
+        revision = self.last_revision
+        if revision:
+            seconds = (now() - revision.created_on).total_seconds()
+            ago = time_format(seconds, 4)
+            return "{} ago".format(ago)
+
+        return "never"
 
     @property
     def content(self):
@@ -127,6 +142,35 @@ class Page(models.Model):
             pages = []
 
         return pages
+
+    @property
+    def children(self):
+        """Return the direct children of  this page."""
+        address = self.address
+        if address:
+            address += "/"
+
+        # Escape the address for re matching
+        addres = re.escape(address)
+        regex = "^" + address + "[^/]+$"
+        children = Page.objects.filter(address__regex=regex).order_by("address")
+        return list(children)
+
+    @property
+    def part_address(self):
+        """Return the last part of the address after the last /."""
+        address = self.address
+        if address.startswith("/"):
+            address = address[1:]
+        if address.endswith("/"):
+            address = address[:-1]
+
+        if not address:
+            return "root"
+        elif "/" in address:
+            return address.rsplit("/", 1)[1]
+        else:
+            return address
 
     def __str__(self):
         address = self.address
