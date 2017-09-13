@@ -1,18 +1,16 @@
-{% extends "base.html" %}
+{% extends "wiki/base.html" %}
 {% block titleblock %}Wiki{% if page.title %} - {{ page.title }} {% endif %}{% endblock %}
-{% block content %}
-
-<div class="breadcrumb">
-  {% for parent in page.parents %}
-    <a class="breadcrumb-item" href="/wiki/{{ parent.address }}">
-    {{ parent.part_address }}</a>
-  {% endfor %}
-  <span class="breadcrumb-item active">{{ page.part_address }}</span>
-</div>
+{% block page_content %}
 
 <div class="card">
   <div class="card-header">
     <h2>{{ page.title }}</h2>
+    {% include "wiki/_tabs.html" with active_tab="view" %}
+  </div>
+  <div class="card-body">
+    {{ page.html|safe }}
+  </div>
+  <div class="card-footer">
     <small>
       Last edited by:
       {% if page.last_revision and page.last_revision.owner %}
@@ -22,16 +20,6 @@
       {% endif %}
       {{ page.last_modified_ago }}.
     </small>
-  </div>
-  <div class="card-body">
-    {{ page.html|safe }}
-  </div>
-  <div class="card-footer">
-    <a class="btn btn-primary" href="/wiki/_edit/{{ page.address }}">Edit</a>
-    {% comment %}
-    This is a bad idea - we should make a form or use Javascript to POST to a delete endpoint.
-    {% endcomment %}
-    <a class="btn btn-danger" href="">Delete</a>
   </div>
 </div>
 

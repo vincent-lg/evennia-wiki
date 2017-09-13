@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "wiki/base.html" %}
 {% block titleblock %}
 {% if page %}
     Editing {{ page.address }}
@@ -8,31 +8,23 @@
     Creating the root page
 {% endif %}
 {% endblock %}
-{% block content %}
+{% block page_content %}
 
 {% load addclass %}
-<div class="breadcrumb">
-  {% if page %}
-  {% for parent in page.parents %}
-    <a class="breadcrumb-item" href="/wiki/{{ parent.address }}">
-    {{ parent.part_address }}</a>
-  {% endfor %}
-  <span class="breadcrumb-item active">{{ page.part_address }}</span>
-  {% elif address %}
-  <span class="breadcrumb-item active">{{ address }}</span>
-  {% endif %}
-</div>
 
 <div class="card">
-  <h2 class="card-header">
-    {% if page %}
-      Editing {{ page.address }}
-    {% elif address %}
-        Creating {{ address }}
-    {% else %}
-        Creating the root page
-    {% endif %}
-  </h2>
+  <div class="card-header">
+    <h2>
+      {% if page %}
+        Editing {{ page.address }}
+      {% elif address %}
+          Creating {{ address }}
+      {% else %}
+          Creating the root page
+      {% endif %}
+    </h2>
+    {% include "wiki/_tabs.html" with active_tab="edit" %}
+  </div>
   <div class="card-body">
     <form action="/wiki/_edit/{{ address }}" method="post">
         {% csrf_token %}
