@@ -19,10 +19,23 @@
           <a class="dropdown-item" href="{{child.address}}">{{child}}</a>
         {% endfor %}
         <div class="dropdown-divider"></div>
-        {% comment %}
-        We'll need to connect the view here - basically just another _edit view with a field for the new page title.
-        {% endcomment %}
-        <a class="dropdown-item" href="/wiki/_add_child/{% firstof address page.address %}">Add Child Page</a>
+        <form class="form-inline dropdown-item">
+          <label for="addressInput">Address</label>
+          <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="addressInput" />
+        </form>
+        <button class="btn btn-primary" onclick="addPage()">Add Child Page</button>
+        <script language="javascript" type="text/javascript">
+          function addPage() {
+            address = document.getElementById('addressInput').value;
+            parent = "{{ page.address }}";
+            if(parent) {
+                address = parent + "/" + address;
+            }
+            address = "/wiki/_edit/" + address;
+            alert(address);
+            window.location.assign(address);
+          }
+        </script>
       </div>
     </li>
   </ul>
