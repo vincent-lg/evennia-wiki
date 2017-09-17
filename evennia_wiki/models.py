@@ -7,12 +7,8 @@ from django.db import models
 from django.utils.timezone import now
 from evennia.accounts.models import AccountDB
 from evennia.utils.utils import time_format
-from markdown import Markdown
-
+from markdown_engine import ENGINE
 from managers import PageManager
-
-# Constants
-MARKDOWN = Markdown()
 
 class Page(models.Model):
 
@@ -58,8 +54,8 @@ class Page(models.Model):
     @property
     def html(self):
         """Return the HTML str of the last revision."""
-        MARKDOWN.reset()
-        return MARKDOWN.convert(self.content)
+        ENGINE.reset()
+        return ENGINE.convert(self.content)
 
     @property
     def parent_address(self):
