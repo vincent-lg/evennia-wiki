@@ -51,4 +51,4 @@ def edit(request, address):
     else:
         form = PageForm(initial=initial)
 
-    return render(request, "wiki/edit.html", {'form': form, 'address': address})
+    return render(request, "wiki/edit.html", {'form': form, 'address': address, "page": page})
