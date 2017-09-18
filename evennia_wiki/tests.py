@@ -44,3 +44,8 @@ class TestPages(TestCase):
         page = Page.objects.create_or_update_content("page", None,
                 "This is another content.")
         self.assertEqual(page.content, "This is another content.")
+
+    def test_page_path(self):
+        """Check that the page path is always valid."""
+        with self.assertRaises(ValueError):
+            page = Page.objects.create_content("non valid", None, "This shouldn't be valid.")

@@ -10,15 +10,21 @@ from evennia.utils.utils import time_format
 from markdown_engine import ENGINE
 from managers import PageManager
 
+## Constants
+RE_PATH = re.compile(r"^[A-Za-z0-9_/-]*$")
+
 class Page(models.Model):
 
     """A wiki page, with a history of revisions."""
 
-    address = models.CharField(max_length=200)
+    objects = PageManager()
+    address = models.CharField(max_length=2000, db_index=True, unique=True)
     title = models.CharField(max_length=200, default="")
     created_on = models.DateTimeField("created on", auto_now_add=True)
-    objects = PageManager()
     author = models.ForeignKey(AccountDB, null=True, blank=True, on_delete=models.SET_NULL)
+    html = models.TextField(default="")
+    can_write = models.CharField(max_length=50, default="Developer")
+    can_read = models.CharField(max_length=50, default="Developer")
 
     @property
     def last_revision(self):
@@ -50,12 +56,6 @@ class Page(models.Model):
             return last.content
         else:
             return ""
-
-    @property
-    def html(self):
-        """Return the HTML str of the last revision."""
-        ENGINE.reset()
-        return ENGINE.convert(self.content)
 
     @property
     def parent_address(self):
@@ -174,6 +174,16 @@ class Page(models.Model):
             return self.address
         else:
             return "/"
+
+    def check_address(self):
+        """Check that the current address if compliant."""
+        if RE_PATH.search(self.address) is None:
+            raise ValueError("{} isn't an acceptable path".format(repr(self.address)))
+
+    def update_html(self, plain_text):
+        """Update the HTML field with the plain text markdown."""
+        ENGINE.reset()
+        return ENGINE.convert(self.content)
 
 
 class Revision(models.Model):

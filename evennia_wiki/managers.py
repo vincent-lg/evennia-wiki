@@ -27,6 +27,8 @@ class PageManager(Manager):
 
         """
         page = self.create(address=address, author=owner)
+        page.check_address()
+        page.update_html(content)
         page.save()
         revision = page.revision_set.create(page=page, content=content, owner=owner)
         return page
@@ -42,6 +44,9 @@ class PageManager(Manager):
 
         """
         page = self.get(address=address)
+        page.check_address()
+        page.update_html(content)
+        page.save()
         revision = page.revision_set.create(page=page, content=content, owner=owner)
         return page
 
