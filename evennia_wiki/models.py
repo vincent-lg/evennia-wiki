@@ -4,6 +4,7 @@ from datetime import datetime
 import re
 
 from django.db import models
+from django.conf import settings
 from django.utils.timezone import now
 from evennia.accounts.models import AccountDB
 from evennia.utils.utils import time_format
@@ -11,6 +12,7 @@ from markdown_engine import ENGINE
 from managers import PageManager
 
 ## Constants
+_PERMISSION_HIERARCHY = ["anonymous"] + [pe.lower() for pe in settings.PERMISSION_HIERARCHY]
 RE_PATH = re.compile(r"^[A-Za-z0-9_/-]*$")
 
 class Page(models.Model):
@@ -182,8 +184,46 @@ class Page(models.Model):
 
     def update_html(self, plain_text):
         """Update the HTML field with the plain text markdown."""
+        print "updating HTML"
         ENGINE.reset()
-        return ENGINE.convert(self.content)
+        self.html = ENGINE.convert(self.content)
+
+    def access(self, user, can="read"):
+        """Return True if the user can access the page.
+
+        Args:
+            user (AccountDB): the user accessing the page.
+            can (str): what to access (can be  read" or "write").
+
+        Returns:
+            access (bool): can the user access this page to read or write?
+
+        """
+        if can == "read":
+            permission = self.can_read
+        elif can == "write":
+            permission = self.can_write
+        else:
+            raise ValueError("Invalid access: {}".format(can))
+
+        permission = permission.lower()
+        if not user.is_authenticated():
+            perms_object = ["anonymous"]
+        else:
+            perms_object = user.permissions.all()
+
+        if permission in perms_object:
+            # simplest case - we have direct match
+            return True
+
+        if permission in _PERMISSION_HIERARCHY:
+            # check if we have a higher hierarchy position
+            hpos_target = _PERMISSION_HIERARCHY.index(permission)
+            return any(1 for hpos, hperm in enumerate(_PERMISSION_HIERARCHY)
+                       if hperm in perms_object and hpos_target < hpos)
+
+        return False
+
 
 
 class Revision(models.Model):

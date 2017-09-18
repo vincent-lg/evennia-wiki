@@ -28,9 +28,8 @@ class PageManager(Manager):
         """
         page = self.create(address=address, author=owner)
         page.check_address()
-        page.update_html(content)
-        page.save()
         revision = page.revision_set.create(page=page, content=content, owner=owner)
+        page.update_html(content)
         return page
 
     def update_content(self, address, owner, content):
@@ -45,9 +44,8 @@ class PageManager(Manager):
         """
         page = self.get(address=address)
         page.check_address()
-        page.update_html(content)
-        page.save()
         revision = page.revision_set.create(page=page, content=content, owner=owner)
+        page.update_html(content)
         return page
 
     def create_or_update_content(self, address, owner, content,
@@ -76,6 +74,6 @@ class PageManager(Manager):
         else:
             # The page exist
             if force_update or page.content != content:
-                self.update_content(address, owner, content)
+                page = self.update_content(address, owner, content)
 
             return page

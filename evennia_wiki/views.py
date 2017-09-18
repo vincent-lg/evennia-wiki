@@ -19,6 +19,9 @@ def view(request, address):
     except Page.DoesNotExist:
         return HttpResponseRedirect('/wiki/_edit/' + address)
 
+    if not page.access(request.user, "read"):
+        return render(request, "wiki/cant_read.html")
+
     return render(request, "wiki/page.html", context=dict(page=page))
 
 def edit(request, address):
@@ -26,6 +29,15 @@ def edit(request, address):
         address = address[1:]
     if address.endswith("/"):
         address = address[:-1]
+
+    # We try to find the parent.  Creating a page without parent isn't possible.
+    parent = None
+    if "/" in address:
+        parent = address.rsplit("/", 1)[0]
+        try:
+            parent = Page.objects.get(address=parent)
+        except Page.DoesNotExist:
+            parent = None
 
     try:
         page = Page.objects.get(address=address)
@@ -44,11 +56,21 @@ def edit(request, address):
             content = form.cleaned_data["content"]
             user = request.user
             user = user if user.is_authenticated() else None
-            page = Page.objects.create_or_update_content(address, user, content)
-            page.title = title
-            page.save()
+            new_page = Page.objects.create_or_update_content(address, user, content)
+            new_page.title = title
+            if parent and not page:
+                new_page.can_write = parent.can_write
+                new_page.can_read = parent.can_read
+            print "update", new_page
+            if new_page.access(user, "write"):
+                print "saving"
+                new_page.save()
             return HttpResponseRedirect('/wiki/' + address)
+    elif parent and not parent.access(request.user, "write"):
+        return HttpResponseRedirect('/wiki/' + address)
+    elif page and not page.access(request.user, "read"):
+        return HttpResponseRedirect('/wiki/' + address)
     else:
         form = PageForm(initial=initial)
 
-    return render(request, "wiki/edit.html", {'form': form, 'address': address, "page": page})
+    return render(request, "wiki/edit.html", {'form': form, 'address': address, "page": page, "parent": parent})
