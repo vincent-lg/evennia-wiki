@@ -178,13 +178,12 @@ class Page(models.Model):
             return "/"
 
     def check_address(self):
-        """Check that the current address if compliant."""
+        """Check that the current address is compliant."""
         if RE_PATH.search(self.address) is None:
             raise ValueError("{} isn't an acceptable path".format(repr(self.address)))
 
     def update_html(self, plain_text):
         """Update the HTML field with the plain text markdown."""
-        print "updating HTML"
         ENGINE.reset()
         self.html = ENGINE.convert(self.content)
 

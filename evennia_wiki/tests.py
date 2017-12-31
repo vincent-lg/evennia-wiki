@@ -14,7 +14,7 @@ class TestPages(TestCase):
         jazz = Page.objects.create(address="music/jazz")
         folk = Page.objects.create(address="music/folk")
 
-        # TEst the single parent of each page
+        # Test the single parent of each page
         self.assertEqual(music.parent, root)
         self.assertEqual(jazz.parent, music)
         self.assertEqual(folk.parent, music)
