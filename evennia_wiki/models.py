@@ -207,7 +207,7 @@ class Page(models.Model):
             raise ValueError("Invalid access: {}".format(can))
 
         permission = permission.lower()
-        if not user.is_authenticated():
+        if user is None or not user.is_authenticated():
             perms_object = ["anonymous"]
         else:
             perms_object = user.permissions.all()
