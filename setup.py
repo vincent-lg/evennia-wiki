@@ -1,22 +1,19 @@
-import os
-from setuptools import find_packages, setup
+import setuptools
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
-    README = readme.read()
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
-# allow setup.py to be run from any path
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
-
-setup(
-    name='evennia_wiki',
-    version='0.1',
-    packages=find_packages(),
-    include_package_data=True,
+setuptools.setup(
+    name="evennia-wiki",
+    version="0.1",
     license='BSD License',
+    author="Vincent Le Goff",
+    author_email="vincent.legoff.srs@gmail.com",
     description='A simple Django app to add a wiki to Evennia',
-    long_description=README,
-    author='Vincent Le Goff',
-    author_email='vincent.legoff.srs@gmail.com',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    include_package_data=True,
+    packages=setuptools.find_packages(),
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
@@ -24,8 +21,12 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',  # example license
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+    ],
+    install_requires=[
+        'markdown',
+        'BeautifulSoup4'
     ],
 )

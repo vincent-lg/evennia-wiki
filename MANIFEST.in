@@ -1,4 +1,4 @@
 include LICENSE
-include README.rst
-recursive-include evennia-wiki/static *
-recursive-include evennia-wiki/templates *
+include README.md
+recursive-include evennia_wiki/static *
+recursive-include evennia_wiki/templates *
