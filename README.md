@@ -4,10 +4,9 @@ A simple wiki for `Evennia`, simple to install within an [Evennia](www.evennia.c
 
 ## Installation
 
-For the time being, you should install from source.  Assuming you are in
-this directory (where the `README.md` file is):
+You have to install Evennia beforehand.  Once done, to add the Wiki, install from pypi:
 
-    python setup.py install
+    pip install evennia_wiki
 
 Then, in your Evennia folder, edit `server/conf/settings.py` to add
 the installed app:
@@ -31,3 +30,10 @@ custom_patterns = [
 
 Don’t forget to run `evennia migrate` after that.
 
+## Usage
+
+You can now run your game:
+
+    evennia start
+
+Go to your website: http://localhost:4001/wiki/ .

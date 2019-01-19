@@ -45,6 +45,6 @@ class MarkdownEngine(Markdown):
             if href and href.startswith("/"):
                 tag["href"] = "/wiki" + href
 
-        return unicode(soup)
+        return str(soup)
 
 ENGINE = MarkdownEngine()

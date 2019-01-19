@@ -8,8 +8,8 @@ from django.conf import settings
 from django.utils.timezone import now
 from evennia.accounts.models import AccountDB
 from evennia.utils.utils import time_format
-from markdown_engine import ENGINE
-from managers import PageManager
+from evennia_wiki.markdown_engine import ENGINE
+from evennia_wiki.managers import PageManager
 
 ## Constants
 _PERMISSION_HIERARCHY = ["anonymous"] + [pe.lower() for pe in settings.PERMISSION_HIERARCHY]
