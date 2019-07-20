@@ -50,7 +50,13 @@ def view(request, address=""):
     if not page.access(request.user, "read"):
         return render(request, "wiki/cant_read.html")
 
-    return render(request, "wiki/page.html", context=dict(page=page))
+    context = {
+            "page": page,
+            "can_read": page.access(user, "read"),
+            "can_write": page.access(user, "write"),
+    }
+
+    return render(request, "wiki/page.html", context=context)
 
 def edit(request, address):
     """Try to edit the given page, handling permissions.
