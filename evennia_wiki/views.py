@@ -18,7 +18,7 @@ def view(request, address):
         The user can read the page.
 
     """
-    user = request.user if request.user.is_authenticated() else None
+    user = request.user if request.user.is_authenticated else None
     if address.startswith("/"):
         address = address[1:]
     if address.endswith("/"):
@@ -98,7 +98,7 @@ def edit(request, address):
             title = form.cleaned_data["title"]
             content = form.cleaned_data["content"]
             user = request.user
-            user = user if user.is_authenticated() else None
+            user = user if user.is_authenticated else None
             can = False
             if user and user.is_superuser:
                 # the superuser can do it all

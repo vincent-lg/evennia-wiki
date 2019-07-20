@@ -205,8 +205,9 @@ class Page(models.Model):
         else:
             raise ValueError("Invalid access: {}".format(can))
 
+        # However, the settings for `WIKI_ALLOW_*` takes precedence
         permission = permission.lower()
-        if user is None or not user.is_authenticated():
+        if user is None or not user.is_authenticated:
             perms_object = ["anonymous"]
         else:
             perms_object = user.permissions.all()
