@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 from datetime import datetime
 import re
 
@@ -206,6 +206,7 @@ class Page(models.Model):
             raise ValueError("Invalid access: {}".format(can))
 
         # However, the settings for `WIKI_ALLOW_*` takes precedence
+        permission = getattr(settings, f"WIKI_CAN_{can.upper()}", permission)
         permission = permission.lower()
         if user is None or not user.is_authenticated:
             perms_object = ["anonymous"]
