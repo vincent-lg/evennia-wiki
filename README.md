@@ -23,7 +23,7 @@ Finally, in `web/urls.py`, you should add the custom URL:
 ```python
 custom_patterns = [
     # ...
-    url(r'^wiki/', include('evennia_wiki.urls', namespace='wiki')),
+    url(r'^wiki/', include('evennia_wiki.urls')),
 ]
 ```
 
