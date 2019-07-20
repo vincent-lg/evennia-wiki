@@ -7,7 +7,7 @@ from django.shortcuts import render
 from evennia_wiki.forms import PageForm
 from evennia_wiki.models import Page
 
-def view(request, address):
+def view(request, address=""):
     """Show the page at this address, handling permission.
 
     If the page doesn't exist, create it if allowed:
