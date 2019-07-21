@@ -46,3 +46,6 @@ The current possibility is to change this default for every page.  It is not pos
 - `WIKI_CAN_READ`: who can read the wiki? Set to `"builder"` by default. Change it to `"anonymous"` to allow anonymous visitors to read your wiki (but not edit it).
 - `WIKI_CAN_WRITE`: who can write your wiki?  Set to `"builder"` by default.  For the time being, anonymous users cannot edit a wiki page, so you need to set it to a group of authenticated users (like `"builder"`  or `"admin"`).
 
+## Documentation
+
+See the [project documentation hosted on Github pages](https://vincent-lg.github.io/evennia-wiki/).
