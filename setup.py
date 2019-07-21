@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="evennia-wiki",
-    version="0.4",
+    version="0.5",
     license='BSD License',
     author="Vincent Le Goff",
     author_email="vincent.legoff.srs@gmail.com",
