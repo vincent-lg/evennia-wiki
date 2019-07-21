@@ -186,6 +186,7 @@ class Page(models.Model):
         """Update the HTML field with the plain text markdown."""
         ENGINE.reset()
         self.html = ENGINE.convert(self.content)
+        self.save()
 
     def access(self, user, can="read"):
         """Return True if the user can access the page.

@@ -55,3 +55,4 @@ Start your Evennia game.  Connect to http://localhost:4001/wiki/ as a superuser.
 - [Setting permissions on evennia-wiki](permissions.md).
 - [Changing default templates of wiki pages](template.md).
 
+- [Entry points into the wiki from your Evennia game](api.md).

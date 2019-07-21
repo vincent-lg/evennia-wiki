@@ -8,3 +8,4 @@
 - [What syntax to use to write in the wiki?](syntax.m).
 - [Setting permissions on evennia-wiki](permissions.md).
 - [Changing default templates of wiki pages](template.md).
+- [Entry points into the wiki from your Evennia game](api.md).
