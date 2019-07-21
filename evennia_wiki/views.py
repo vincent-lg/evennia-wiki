@@ -31,6 +31,7 @@ def view(request, address=""):
     else:
         parent = ""
 
+    Page.objects.create_root_page_if_necessary()
     try:
         parent = Page.objects.get(address=parent)
     except Page.DoesNotExist:
